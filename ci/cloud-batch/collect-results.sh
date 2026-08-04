@@ -21,8 +21,6 @@ echo "=== Copying verified result artifacts ==="
 mkdir -p "${RESULTS_LOCAL}"
 cp "${VERIFIED_RESULTS_DIR}"/task_*.json "${RESULTS_LOCAL}/"
 cp "${VERIFIED_RESULTS_DIR}"/task_*.log "${RESULTS_LOCAL}/"
-# Non-fatal if no junit files exist this run (see submit.sh); stderr is
-# left visible so a real copy failure isn't mistaken for that empty case.
 cp "${VERIFIED_RESULTS_DIR}"/task_*_junit.xml "${RESULTS_LOCAL}/" || true
 
 python3 "${SCRIPT_DIR}/verify-result-identities.py" \

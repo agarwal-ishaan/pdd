@@ -437,13 +437,6 @@ while [ "${ELAPSED}" -lt "${POLL_TIMEOUT}" ]; do
             "gs://${BUCKET}/${JOB_RUN_ID}/results/task_*.json" "${STREAMING_DIR}/"
         _with_timeout 30 gcloud storage cp --quiet \
             "gs://${BUCKET}/${JOB_RUN_ID}/results/task_*.log" "${STREAMING_DIR}/"
-        # Best-effort: junit XMLs feed balance-chunks.py's duration recorder
-        # (collect-results.sh). A pytest task with an empty chunk (or every
-        # pytest task failing preflight) writes no junit file, so a zero
-        # match here must not abort an otherwise-successful run — but stderr
-        # is left unsuppressed so a *real* download failure (bad path, auth)
-        # is still visible in the log instead of looking identical to that
-        # legitimate empty case.
         _with_timeout 30 gcloud storage cp --quiet \
             "gs://${BUCKET}/${JOB_RUN_ID}/results/task_*_junit.xml" "${STREAMING_DIR}/" || true
         echo "=== Verifying attributable logs contain no credential fingerprints ==="
