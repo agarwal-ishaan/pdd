@@ -437,6 +437,12 @@ while [ "${ELAPSED}" -lt "${POLL_TIMEOUT}" ]; do
             "gs://${BUCKET}/${JOB_RUN_ID}/results/task_*.json" "${STREAMING_DIR}/"
         _with_timeout 30 gcloud storage cp --quiet \
             "gs://${BUCKET}/${JOB_RUN_ID}/results/task_*.log" "${STREAMING_DIR}/"
+        # Best-effort: junit XMLs feed balance-chunks.py's duration recorder
+        # (collect-results.sh). Not every task writes one (e.g. an empty
+        # pytest chunk skips pytest entirely), so a partial or zero match
+        # must not abort an otherwise-successful run.
+        _with_timeout 30 gcloud storage cp --quiet \
+            "gs://${BUCKET}/${JOB_RUN_ID}/results/task_*_junit.xml" "${STREAMING_DIR}/" 2>/dev/null || true
         echo "=== Verifying attributable logs contain no credential fingerprints ==="
         if ! _verify_secret_log_boundary; then
             echo "=== Credential-log boundary verification FAILED ==="
