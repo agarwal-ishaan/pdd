@@ -947,7 +947,7 @@ _PDD_1875_COMPOSED_REQUIREMENT_TRANSITIONS = (
         "pdd/prompts/user_story_tests_python.prompt",
         "python",
         "c63d875cc5d488b8fd9bfdd72ea015f33962d22b5cde90b9be751de55a209e32",
-        "1c467034344d9d87b8225995bc458bc8093e6759dd5c2eed8424b345f69a3ba7",
+        "5b1353257a64a25b303d990803bb799da66504af558c3a5e972d95ad5a04bb3b",
         _PDD_1875_COMPOSED_PROFILE_BYTES[0],
         _PDD_1875_COMPOSED_PROFILE_BYTES[1],
     ),
@@ -3362,6 +3362,13 @@ def _matches_unchanged_requirement_state(
     """Keep one exact row dormant across unrelated profile-file rotations."""
     if prompts[0] is None or prompts[0] != prompts[1]:
         return False
+    # A profile that already exactly describes unchanged prompt bytes is
+    # stationary even when an unrelated profile-record refresh changes the
+    # whole-policy digest. The normal profile validation still verifies the
+    # obligation mapping; this only prevents dormant historical rotations from
+    # treating that safe state as a new transition.
+    if profile.requirements == _prompt_requirements(prompts[0]):
+        return True
     prompt_digest = _sha256(prompts[0])
     states = (
         (
