@@ -1297,6 +1297,24 @@ _BOOTSTRAP_PROFILE_ADDITIONS = (
         "fe80e8278f3f262f9902e8af6e88f79476f55fcb830929d5c3bea5a87e6e72c3",
         "34624bde64048913f0c05a3ce2d7faab89997cf46c97f81e4ae27a603e5ed506",
     ),
+    # The bounded story-criteria gate (issue #5) introduces two new units: the
+    # runtime classification prompt and the spec that generates
+    # ``pdd/story_criteria.py``. Both are bound to their exact candidate policy
+    # and prompt bytes, so this authorizes these two additions only.
+    (
+        PurePosixPath("pdd/prompts/story_criteria_LLM.prompt"),
+        "llm",
+        "CONTRACT-SHA256:502768e905f49b587ac821e520002019e758a79aba9fda89c0bf73c7488e3f5d",
+        "13933430441ceafd14232eff53e8456628f70ea5a18fd6c233cb40f18547c830",
+        "502768e905f49b587ac821e520002019e758a79aba9fda89c0bf73c7488e3f5d",
+    ),
+    (
+        PurePosixPath("pdd/prompts/story_criteria_python.prompt"),
+        "python",
+        "CONTRACT-SHA256:e0514f4abcc03f6c41f3ef3cf8978bdb0f4e732d3d8c306f7618469762d8ee4b",
+        "13933430441ceafd14232eff53e8456628f70ea5a18fd6c233cb40f18547c830",
+        "e0514f4abcc03f6c41f3ef3cf8978bdb0f4e732d3d8c306f7618469762d8ee4b",
+    ),
 )
 
 
