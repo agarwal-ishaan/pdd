@@ -167,6 +167,13 @@ _PR2316_STALE_LLM_REISSUE_PHASE_B_PROFILE_BYTES = (
     _PR2316_STALE_LLM_REISSUE_PHASE_A_PROFILE_BYTES[1],
     "a2071278af121c6b41b93a2630041541292d70a4acec40751c34dcfdb1b77a9f",
 )
+# The story-prompt metadata correction changes exactly one current prompt and
+# its matching profile row.  Preserve the earlier #1875 authorization below
+# as immutable history; this separately binds the current transition.
+_STORY_PROMPT_FINGERPRINT_PROFILE_BYTES = (
+    _PR2316_STALE_LLM_REISSUE_PHASE_B_PROFILE_BYTES[1],
+    "f5574e012798229f5cc892a53a212b17f43ee7326d9cb2567467b1b8958c7bea",
+)
 _PR2316_STALE_LLM_REISSUE_PHASE_B_STATIONARY_PROFILE_BYTES = (
     _PR2316_STALE_LLM_REISSUE_PHASE_B_PROFILE_BYTES[1],
     _PR2316_STALE_LLM_REISSUE_PHASE_B_PROFILE_BYTES[1],
@@ -1187,6 +1194,18 @@ _BOOTSTRAP_REQUIREMENT_TRANSITIONS = tuple(
     for item in _BOOTSTRAP_REQUIREMENT_TRANSITIONS
 )
 _BOOTSTRAP_REQUIREMENT_TRANSITIONS += _PDD_1875_COMPOSED_REQUIREMENT_TRANSITIONS
+
+_STORY_PROMPT_FINGERPRINT_REQUIREMENT_TRANSITIONS = (
+    _exact_bootstrap_requirement_transition(
+        "pdd/prompts/user_story_tests_python.prompt",
+        "python",
+        "1c467034344d9d87b8225995bc458bc8093e6759dd5c2eed8424b345f69a3ba7",
+        "5b1353257a64a25b303d990803bb799da66504af558c3a5e972d95ad5a04bb3b",
+        _STORY_PROMPT_FINGERPRINT_PROFILE_BYTES[0],
+        _STORY_PROMPT_FINGERPRINT_PROFILE_BYTES[1],
+    ),
+)
+_BOOTSTRAP_REQUIREMENT_TRANSITIONS += _STORY_PROMPT_FINGERPRINT_REQUIREMENT_TRANSITIONS
 _REPLAY_REPLACED_PROTECTED_TRANSITIONS = (
     _exact_bootstrap_requirement_transition(
         "pdd/prompts/sync_orchestration_python.prompt",
