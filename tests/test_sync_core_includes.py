@@ -61,6 +61,28 @@ def test_literal_include_tag_in_prose_does_not_consume_later_markup() -> None:
     assert [item.path for item in references] == ["docs/actual.md"]
 
 
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Use ``<include>docs/fake.md</include>`` here\n<include>docs/real.md</include>",
+        "````markdown\n<include>docs/fake.md</include>\n`````\n<include>docs/real.md</include>",
+        "~~~\n<include-many>docs/fake.md, docs/also-fake.md</include-many>\n~~~~\n<include-many>docs/real.md</include-many>",
+    ],
+)
+def test_markdown_literal_spans_do_not_create_include_dependencies(text) -> None:
+    """Inline spans and homogeneous fences leave directives literal."""
+    assert [item.path for item in parse_include_references(text)] == ["docs/real.md"]
+
+
+def test_mixed_fence_delimiters_do_not_hide_a_real_include() -> None:
+    """An invalid mixed-delimiter fence is ordinary text, not a literal span."""
+    text = "~~`\n<include>docs/fake.md</include>\n~~`\n<include>docs/real.md</include>"
+    assert [item.path for item in parse_include_references(text)] == [
+        "docs/fake.md",
+        "docs/real.md",
+    ]
+
+
 @pytest.mark.timeout(1, func_only=True)
 def test_malformed_include_text_is_bounded() -> None:
     """Unterminated include markup cannot trigger superlinear parser backtracking."""
